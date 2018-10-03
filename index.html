@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Rock Paper Scissors</title>
+</head>
+<body>
+	<script>
+		let options = ['rock', 'paper', 'scissors'];
+
+		function computerPlay() {
+
+			return options[Math.floor(Math.random() * options.length)];
+		}
+
+		function playRound(playerSelection, computerSelection) {
+
+			let isPlayerTheWinner,
+				p1 = playerSelection.toLowerCase(),
+				p2 = computerSelection.toLowerCase(),
+				result;
+
+			p1 = checkSelection(p1);
+
+			if(checkIfTie(p1, p2)) {
+				return 'tie';
+			}
+
+			// determine if the player is the winner with all positive conditions
+			isPlayerTheWinner = (p1 === 'paper'    && p2 === 'rock')     ||
+					 			(p1 === 'rock'     && p2 === 'scissors') ||
+					 			(p1 === 'scissors' && p2 === 'paper');
+
+
+			result = isPlayerTheWinner ? `You Win! ${capitalize(p1)} beats ${capitalize(p2)}` :
+									   `You Lose! ${capitalize(p1)} beats ${capitalize(p2)}`;
+
+			return [isPlayerTheWinner, result];
+		}
+
+		function game() {
+			let score = 0,
+				numberOfRounds = 5,
+				playerWins = 0,
+				computerWins = 0,
+				winRatio,
+				finalResult;
+
+			for (let i = 1; i <= numberOfRounds; i++) {
+				round = playRound(prompt('Choose rock, paper or scissors', ''), computerPlay());
+
+				if (round === 'tie') {
+					alert('Tie!')
+				} else {
+					if (round[0]) {
+						playerWins += 1;
+					} else {
+						computerWins += 1;
+					}
+
+					alert(round[1]);
+				}
+			}
+
+			winRatio = playerWins + ':' + computerWins;
+
+			finalResult = playerWins < 3 ? `You Lose! Result: ${winRatio}` :
+									 `You Win! Result: ${winRatio}`;
+
+			return finalResult;
+		}
+
+		function checkSelection(selection) {
+			if (options.includes(selection.toLowerCase())) {
+				return selection;
+			} else {
+				selection = prompt('Invalid input! Enter again', '');
+
+				if (checkSelection(selection)) {
+					return selection;
+				}
+			}
+		}
+
+		function checkIfTie(selection1, selection2) {
+			return selection1 === selection2;
+		}
+
+		function capitalize(string) {
+			return string.charAt(0).toUpperCase() + string.slice(1);
+		}
+	</script>
+</body>
+</html>
